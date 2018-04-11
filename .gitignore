@@ -77,3 +77,6 @@ target/
 
 # exclude data from source control by default
 /data/
+# and models
+/models/
+
