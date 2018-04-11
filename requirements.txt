@@ -3,4 +3,17 @@ Sphinx
 coverage
 awscli
 flake8
+beautifulsoup4==4.6.0
+boto3==1.7.4
+gensim==2.3.0
+jupyter
+jupyterlab
+matplotlib==2.2.2
+nltk==3.2.5
+numpy==0.13.3
+pandas==0.22.0
 python-dotenv>=0.5.1
+pyldavis==2.1.1
+scipy==1.0.1
+scikit-learn==0.19.1
+yellowbric==0.6
