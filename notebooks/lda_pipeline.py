@@ -230,7 +230,7 @@ class LdaPipeline():
         
         #Convert this into a dataframe
         predicted_df = pd.concat([pd.DataFrame({x[0]:x[1] for x in topics},
-                                              index=[num]) for num,topics in enumerate(predicted)]).fillna(0)
+                                              index=[num]) for num, topics in enumerate(predicted)]).fillna(0)
         
         self.predicted_df = predicted_df
         
