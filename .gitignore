@@ -81,3 +81,5 @@ target/
 /models/
 # and figures
 /reports/figures
+
+.DS_Store
