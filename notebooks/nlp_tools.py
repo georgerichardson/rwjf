@@ -240,3 +240,48 @@ class CleanText(TransformerMixin):
     
     def transform(self, texts, *args):
         return self.process(texts)
+    
+class BaseSearchGensim():
+    
+    def __init__(self, model, params):
+        self.model = model
+        self.params = params
+    
+    def explode_params(self, params):
+        flat = [[(k, v) for v in vs] for k, vs in params.items()]
+        param_combinations = [dict(items) for items in itertools.product(*flat)]
+        return param_combinations
+
+class CoherenceSearchGensim(BaseSearchGensim):
+    
+    def __init__(self, model, params, corpus, dictionary, texts):
+        self.corpus = corpus
+        self.dictionary = dictionary
+        self.texts = texts
+        super().__init__(model, params)
+    
+    def optimise_coherence(self):
+        params = self.params
+        model = self.model
+        corpus = self.corpus
+        dictionary = self.dictionary
+        texts = self.texts
+        
+        self.params_tried = []
+        self.models_tried = []
+        self.coherence_values = []
+
+        self.best_model = None
+        
+        param_combos = self.explode_params(params)
+
+        for param_group in param_combos:
+            model_temp = self.model(corpus=corpus, id2word=dictionary, **param_group)
+            self.models_tried.append(model_temp)
+            coherencemodel = CoherenceModel(model=model_temp, texts=texts, dictionary=dictionary, coherence='c_v')
+            self.coherence_values.append(coherencemodel.get_coherence())
+            if self.best_model is None:
+                self.best_model = model_temp
+            else:
+                if self.coherence_values[-1] > coherencemodel.get_coherence():
+                    self.best_model = model_temp
